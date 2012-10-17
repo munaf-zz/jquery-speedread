@@ -1,23 +1,24 @@
 /*
  *  Project: jQuery Speed Reader
- *  Description: 
+ *  Description: Add spreeder-like speed reading functionality to your page
  *  Author: Munaf Assaf
  *  License: MIT
  */
 
 ;(function ( $, window, undefined ) {
-
     var pluginName = 'speedread',
         document = window.document,
         defaults = {
-            chunkSize: 2,       // # of words to display at a time
-            chunkTime: 1000     // time in (ms) to display a chunk
+            chunkSize: 2,
+            chunkTime: 1000,
+            headerTags: [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ],
+            contentTags: [ 'p', 'section' ]
         };
 
     // Constructor
-    function SpeedRead( element, options ) {
+    function Plugin( element, options ) {
 
-        // `element` is the container for the input html
+        // `element` is the container for the input text to be read
         this.element = element;
 
         // Merge user options with defaults
@@ -32,15 +33,53 @@
     }
 
     // Plugin initializer
-    SpeedRead.prototype.init = function () {
+    Plugin.prototype.init = function () {
 
-        // Apply user options
-
-        // Parse text into headers/content
+        // Split content into sections
+        this.sections = this.sectionize();
 
         // Run speed reader
 
     };
+
+    // Split content into sections
+    Plugin.prototype.sectionize = function () {
+
+        var sections    = [],
+            headerTags  = this.options.headerTags,
+            contentTags = this.options.contentTags;
+
+        $( this.element ).children().each( function( index, child ) {
+
+            if ( $.inArray( child.tagName.toLowerCase(), headerTags ) >= 0 ) {
+
+                sections.push({
+                    header: child.innerText,
+                    content: []
+                });
+
+            } else if ( $.inArray( child.tagName.toLowerCase(), contentTags ) >= 0 ) {
+
+                if ( sections.length > 0 ) {
+
+                    $.merge( sections[ sections.length - 1 ].content, 
+                         child.innerText.split( ' ' ) );
+
+                } else {
+
+                    sections.push({
+                        header: null,
+                        content: child.innerText.split( ' ' )
+                    });
+                }
+            }
+
+        });
+
+        return sections;
+
+    };
+
 
     // Plugin wrapper to prevent multiple instantiations
     $.fn[pluginName] = function ( options ) {
