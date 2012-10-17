@@ -36,7 +36,7 @@
     Plugin.prototype.init = function () {
 
         // Split content into sections
-        this.sections = this.sectionize();
+        this.sectionize();
 
         // Run speed reader
 
@@ -61,23 +61,20 @@
             } else if ( $.inArray( child.tagName.toLowerCase(), contentTags ) >= 0 ) {
 
                 if ( sections.length > 0 ) {
-
                     $.merge( sections[ sections.length - 1 ].content, 
                          child.innerText.split( ' ' ) );
-
                 } else {
-
                     sections.push({
                         header: null,
                         content: child.innerText.split( ' ' )
                     });
                 }
+
             }
 
         });
 
-        return sections;
-
+        this.sections = sections;
     };
 
 
