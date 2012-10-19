@@ -35,7 +35,7 @@
         
         // Initialize plugin
         this.init();
-    }
+    } 
 
     // Plugin initializer
     Plugin.prototype.init = function () {
@@ -43,8 +43,9 @@
         // Split content into sections
         this.sections = utils.parse( this.element, this.options.schema );
 
-        // Run speed reader
-
+        // Add speed reader to DOM
+        this.$player = utils.createPlayer();
+        this.$player.appendTo( 'body ');
     };
 
     // General, private utilities (not exposed via plugin API)
@@ -92,12 +93,28 @@
                     // Don't count headers as content
                     this._length += content.length;
                 }
-            });
 
-            // Save parsed text to object
+            }); // $.each
+
             return sections;
+
+        }, // parse()
+
+        createPlayer: function() {
+
+            var html = [
+                    '<div class="jq-speedread-modal">',
+                        '<div class="player">',
+                            '<div class="close-icon">x</div>',
+                            '<div class="chunk-display"></div>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+            return $( html );
         }
-    }; 
+
+    }; // utils object
 
     // Plugin wrapper to prevent multiple instantiations
     $.fn[pluginName] = function ( options ) {
