@@ -27,6 +27,7 @@
         // Save meta info
         this._defaults = defaults;
         this._name = pluginName;
+        this._length = 0;
         
         // Initialize plugin
         this.init();
@@ -46,6 +47,7 @@
     Plugin.prototype.parse = function () {
 
         var sections    = [],
+            content     = [],
             headerTags  = this.options.headerTags,
             contentTags = this.options.contentTags;
 
@@ -60,21 +62,23 @@
 
             } else if ( $.inArray( child.tagName.toLowerCase(), contentTags ) >= 0 ) {
 
+                content = child.innerText.split(' ');
+
                 if ( sections.length > 0 ) {
 
-                    $.merge( sections[ sections.length - 1 ].content, 
-                         child.innerText.split( ' ' ) 
-                    );
+                    $.merge( sections[ sections.length - 1 ].content, content );
 
                 } else {
 
                     sections.push({
                         header: null,
-                        content: child.innerText.split( ' ' )
+                        content: content
                     });
-                    
+
                 }
 
+                // Update total length for progress bar
+                this._length += content.length;
             }
 
         });
