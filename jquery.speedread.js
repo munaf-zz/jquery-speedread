@@ -41,61 +41,63 @@
     Plugin.prototype.init = function () {
 
         // Split content into sections
-        this.parse();
+        this.sections = utils.parse( this.element, this.options );
 
         // Run speed reader
 
     };
 
     // Split content into sections
-    Plugin.prototype.parse = function () {
+    var utils = {
+        parse: function ( element, options ) {
 
-        var sections    = [],
-            content     = [],
-            headerTags  = this.options.schema.headers,
-            contentTags = this.options.schema.contentTags;
+            var sections    = [],
+                content     = [],
+                headerTags  = options.schema.headers,
+                contentTags = options.schema.content;
 
-        // Scrape content from each child node of given element
-        $( this.element ).children().each( function( index, child ) {
+            // Scrape content from each child node of given element
+            $( element ).children().each( function( index, child ) {
 
-            // Create a new section
-            // Section titles will have different CSS than content
-            if ( $.inArray( child.tagName.toLowerCase(), headerTags ) >= 0 ) {
-
-                sections.push({
-                    header: child.innerText,
-                    content: []
-                });
-
-            // Add content to an existing section or create a new section
-            } else if ( $.inArray( child.tagName.toLowerCase(), contentTags ) >= 0 ) {
-
-                content = child.innerText.split(' ');
-
-                // Update existing section
-                if ( sections.length > 0 ) {
-
-                    $.merge( sections[ sections.length - 1 ].content, content );
-                }
-
-                // Or create a new section
-                else {
+                // Create a new section
+                // Section titles will have different CSS than content
+                if ( $.inArray( child.tagName.toLowerCase(), headerTags ) >= 0 ) {
 
                     sections.push({
-                        header: null,
-                        content: content
+                        header: child.innerText,
+                        content: []
                     });
+
+                // Add content to an existing section or create a new section
+                } else if ( $.inArray( child.tagName.toLowerCase(), contentTags ) >= 0 ) {
+
+                    content = child.innerText.split(' ');
+
+                    // Update existing section
+                    if ( sections.length > 0 ) {
+
+                        $.merge( sections[ sections.length - 1 ].content, content );
+                    }
+
+                    // Or create a new section
+                    else {
+
+                        sections.push({
+                            header: null,
+                            content: content
+                        });
+                    }
+
+                    // Update total length for progress bar
+                    // Don't count headers as content
+                    this._length += content.length;
                 }
+            });
 
-                // Update total length for progress bar
-                // Don't count headers as content
-                this._length += content.length;
-            }
-        });
-
-        // Save parsed text to object
-        this.sections = sections;
-    };
+            // Save parsed text to object
+            return sections;
+        }
+    }; 
 
     // Plugin wrapper to prevent multiple instantiations
     $.fn[pluginName] = function ( options ) {
