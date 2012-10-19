@@ -47,7 +47,7 @@
 
     };
 
-    // Split content into sections
+    // General, private utilities (not exposed via plugin API)
     var utils = {
         parse: function ( element, schema ) {
 
