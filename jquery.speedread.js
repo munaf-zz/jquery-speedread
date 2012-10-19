@@ -32,6 +32,10 @@
         this._defaults = defaults;
         this._name = pluginName;
         this._length = 0;
+        this._pos = {
+            section: 0,
+            word: 0
+        };
         
         // Initialize plugin
         this.init();
@@ -44,8 +48,58 @@
         this.sections = utils.parse( this.element, this.options.schema );
 
         // Add speed reader to DOM
-        this.$player = utils.createPlayer();
-        this.$player.appendTo( 'body ');
+        this.$modal = utils.createPlayer();
+        this.$modal.appendTo( 'body' );
+
+        this.play();
+    };
+
+    // Plugin initializer
+    Plugin.prototype.play = function () {
+
+        var $player  = this.$modal.find( '.chunk-display' ),
+            _this    = this,
+            playerID = enablePlayer();
+
+        function enablePlayer() {
+            return window.setInterval( printChunk, _this.options.chunkTime );
+        }
+
+        function disablePlayer() {
+            window.clearInterval( playerID );
+        }
+
+        function printChunk() {
+            var wordPos = _this._pos.word;
+
+            var chunk = _this.sections[ _this._pos.section ]
+                        .content.slice( wordPos, wordPos + _this.options.chunkSize )
+                        .join(' ');
+
+            $player.html( '<span>' + chunk + '</span' );
+
+            advancePosition();
+        }
+
+        function advancePosition() {
+            _this._pos.word += _this.options.chunkSize;
+
+            if ( _this._pos.word >= _this.sections[ _this._pos.section ].content.length ) {
+
+                _this._pos.word = 0;
+                _this._pos.section++;
+
+            }
+
+            if ( _this._pos.section >= _this.sections.length ) {
+
+                _this._pos.section = 0;
+                _this._pos.word = 0;
+
+                disablePlayer();
+            }
+        }
+
     };
 
     // General, private utilities (not exposed via plugin API)
