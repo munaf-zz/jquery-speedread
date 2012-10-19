@@ -36,14 +36,14 @@
     Plugin.prototype.init = function () {
 
         // Split content into sections
-        this.sectionize();
+        this.parse();
 
         // Run speed reader
 
     };
 
     // Split content into sections
-    Plugin.prototype.sectionize = function () {
+    Plugin.prototype.parse = function () {
 
         var sections    = [],
             headerTags  = this.options.headerTags,
