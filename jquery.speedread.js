@@ -41,7 +41,7 @@
     Plugin.prototype.init = function () {
 
         // Split content into sections
-        this.sections = utils.parse( this.element, this.options );
+        this.sections = utils.parse( this.element, this.options.schema );
 
         // Run speed reader
 
@@ -49,12 +49,12 @@
 
     // Split content into sections
     var utils = {
-        parse: function ( element, options ) {
+        parse: function ( element, schema ) {
 
             var sections    = [],
                 content     = [],
-                headerTags  = options.schema.headers,
-                contentTags = options.schema.content;
+                headerTags  = schema.headers,
+                contentTags = schema.content;
 
             // Scrape content from each child node of given element
             $( element ).children().each( function( index, child ) {
