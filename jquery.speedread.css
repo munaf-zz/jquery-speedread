@@ -27,9 +27,11 @@
 }
 
 .jq-speedread-modal .player .close-icon:hover {
-    float: right; font-weight: bold; color: black; cursor: pointer;
+    float: right; 
+    font-weight: bold; 
+    color: black; 
+    cursor: pointer;
 }
-
 
 .jq-speedread-modal .player .chunk-display {
     width: 85%;
