@@ -61,13 +61,18 @@
             } else if ( $.inArray( child.tagName.toLowerCase(), contentTags ) >= 0 ) {
 
                 if ( sections.length > 0 ) {
+
                     $.merge( sections[ sections.length - 1 ].content, 
-                         child.innerText.split( ' ' ) );
+                         child.innerText.split( ' ' ) 
+                    );
+
                 } else {
+
                     sections.push({
                         header: null,
                         content: child.innerText.split( ' ' )
                     });
+                    
                 }
 
             }
