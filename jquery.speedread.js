@@ -13,9 +13,11 @@
         defaults = {
             chunkSize: 2,
             chunkTime: 1000,
-            headerTags: [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ],
-            contentTags: [ 'p', 'section' ],
-            ignoreTags: [ 'table' ]
+            schema: {
+                headers: [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ],
+                content: [ 'p', 'section' ],
+                ignore: [ 'table' ]
+            }
         };
 
     // Constructor
@@ -51,8 +53,8 @@
 
         var sections    = [],
             content     = [],
-            headerTags  = this.options.headerTags,
-            contentTags = this.options.contentTags;
+            headerTags  = this.options.schema.headers,
+            contentTags = this.options.schema.contentTags;
 
         // Scrape content from each child node of given element
         $( this.element ).children().each( function( index, child ) {
