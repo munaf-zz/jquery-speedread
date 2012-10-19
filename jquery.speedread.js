@@ -14,7 +14,8 @@
             chunkSize: 2,
             chunkTime: 1000,
             headerTags: [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ],
-            contentTags: [ 'p', 'section' ]
+            contentTags: [ 'p', 'section' ],
+            ignoreTags: [ 'table' ]
         };
 
     // Constructor
