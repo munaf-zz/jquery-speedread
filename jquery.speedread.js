@@ -6,6 +6,8 @@
  */
 
 ;(function ( $, window, undefined ) {
+
+    // Plugin meta-properties
     var pluginName = 'speedread',
         document = window.document,
         defaults = {
@@ -51,8 +53,11 @@
             headerTags  = this.options.headerTags,
             contentTags = this.options.contentTags;
 
+        // Scrape content from each child node of given element
         $( this.element ).children().each( function( index, child ) {
 
+            // Create a new section
+            // Section titles will have different CSS than content
             if ( $.inArray( child.tagName.toLowerCase(), headerTags ) >= 0 ) {
 
                 sections.push({
@@ -60,32 +65,35 @@
                     content: []
                 });
 
+            // Add content to an existing section or create a new section
             } else if ( $.inArray( child.tagName.toLowerCase(), contentTags ) >= 0 ) {
 
                 content = child.innerText.split(' ');
 
+                // Update existing section
                 if ( sections.length > 0 ) {
 
                     $.merge( sections[ sections.length - 1 ].content, content );
+                }
 
-                } else {
+                // Or create a new section
+                else {
 
                     sections.push({
                         header: null,
                         content: content
                     });
-
                 }
 
                 // Update total length for progress bar
+                // Don't count headers as content
                 this._length += content.length;
             }
-
         });
 
+        // Save parsed text to object
         this.sections = sections;
     };
-
 
     // Plugin wrapper to prevent multiple instantiations
     $.fn[pluginName] = function ( options ) {
