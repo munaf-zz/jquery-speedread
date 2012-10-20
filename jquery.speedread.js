@@ -2,7 +2,7 @@
  *  Project: jQuery Speed Reader
  *  Description: Add spreeder-like speed reading functionality to your page
  *  Author: Munaf Assaf
- *  License: MIT
+ *  License: WTFPL (http://sam.zoy.org/wtfpl)
  */
 
 ;(function ( $, window, undefined ) {
