@@ -75,7 +75,7 @@
                         .content.slice( wordPos, wordPos + self.options.chunkSize )
                         .join(' ');
 
-            $player.html( '<span>' + chunk + '</span' );
+            $player.html( '<span>' + chunk + '</span>' );
 
             advancePosition();
         }
