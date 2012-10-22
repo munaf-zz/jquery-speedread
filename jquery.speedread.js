@@ -39,15 +39,15 @@
     // Plugin initializer
     Plugin.prototype.init = function () {
 
-        // Split content into sections
-        this.sections = utils.parse( this.element, this.options.schema );
-
         // Initialize content meta variables
         this._length = 0;
         this._pos = {
             section: 0,
             word: 0
         };
+
+        // Split content into sections
+        this.sections = utils.parse( this.element, this.options.schema );
 
         // Add speed reader to DOM
         this.$modal = utils.createPlayer();
