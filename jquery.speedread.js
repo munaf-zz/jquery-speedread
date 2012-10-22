@@ -31,11 +31,6 @@
         // Save meta info
         this._defaults = defaults;
         this._name = pluginName;
-        this._length = 0;
-        this._pos = {
-            section: 0,
-            word: 0
-        };
         
         // Initialize plugin
         this.init();
@@ -46,6 +41,13 @@
 
         // Split content into sections
         this.sections = utils.parse( this.element, this.options.schema );
+
+        // Initialize content meta variables
+        this._length = 0;
+        this._pos = {
+            section: 0,
+            word: 0
+        };
 
         // Add speed reader to DOM
         this.$modal = utils.createPlayer();
