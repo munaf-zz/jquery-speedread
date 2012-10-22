@@ -50,18 +50,18 @@
         // Add speed reader to DOM
         this.$modal = utils.createPlayer();
         this.$modal.appendTo( 'body' );
-        
+
     };
 
     // Plugin initializer
     Plugin.prototype.play = function () {
 
         var $player  = this.$modal.find( '.chunk-display' ),
-            _this    = this,
+            self     = this,
             playerID = enablePlayer();
 
         function enablePlayer() {
-            return window.setInterval( printChunk, _this.options.chunkTime );
+            return window.setInterval( printChunk, self.options.chunkTime );
         }
 
         function disablePlayer() {
@@ -69,10 +69,10 @@
         }
 
         function printChunk() {
-            var wordPos = _this._pos.word;
+            var wordPos = self._pos.word;
 
-            var chunk = _this.sections[ _this._pos.section ]
-                        .content.slice( wordPos, wordPos + _this.options.chunkSize )
+            var chunk = self.sections[ self._pos.section ]
+                        .content.slice( wordPos, wordPos + self.options.chunkSize )
                         .join(' ');
 
             $player.html( '<span>' + chunk + '</span' );
@@ -81,19 +81,19 @@
         }
 
         function advancePosition() {
-            _this._pos.word += _this.options.chunkSize;
+            self._pos.word += self.options.chunkSize;
 
-            if ( _this._pos.word >= _this.sections[ _this._pos.section ].content.length ) {
+            if ( self._pos.word >= self.sections[ self._pos.section ].content.length ) {
 
-                _this._pos.word = 0;
-                _this._pos.section++;
+                self._pos.word = 0;
+                self._pos.section++;
 
             }
 
-            if ( _this._pos.section >= _this.sections.length ) {
+            if ( self._pos.section >= self.sections.length ) {
 
-                _this._pos.section = 0;
-                _this._pos.word = 0;
+                self._pos.section = 0;
+                self._pos.word = 0;
 
                 disablePlayer();
             }
