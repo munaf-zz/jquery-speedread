@@ -174,7 +174,7 @@
 
         var plugin = null;
 
-        return this.each(function () {
+        var data = this.each(function () {
             if (!$.data(this, 'plugin_' + pluginName)) {
 
                 plugin = new Plugin( this, options );
@@ -182,6 +182,8 @@
                 $.data(this, 'plugin_' + pluginName, plugin );
             }
         });
+
+        return plugin;
     };
 
 }(jQuery, window));
