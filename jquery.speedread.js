@@ -50,8 +50,7 @@
         // Add speed reader to DOM
         this.$modal = utils.createPlayer();
         this.$modal.appendTo( 'body' );
-
-        this.play();
+        
     };
 
     // Plugin initializer
@@ -172,9 +171,15 @@
 
     // Plugin wrapper to prevent multiple instantiations
     $.fn[pluginName] = function ( options ) {
+
+        var plugin = null;
+
         return this.each(function () {
             if (!$.data(this, 'plugin_' + pluginName)) {
-                $.data(this, 'plugin_' + pluginName, new Plugin( this, options ));
+
+                plugin = new Plugin( this, options );
+
+                $.data(this, 'plugin_' + pluginName, plugin );
             }
         });
     };
